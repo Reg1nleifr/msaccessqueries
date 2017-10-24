@@ -19,8 +19,8 @@ namespace ConsoleApp1
         {
             if(ReadDataFromFile("./db.ini"))
             {
-                //CreateBirthDayCSV();
-                CreateBloodCSV();
+                CreateBirthDayCSV();
+                //CreateBloodCSV();
             }
         }
 
@@ -49,7 +49,7 @@ namespace ConsoleApp1
                         var anrede = reader[data["anredeColName"]].ToString().Trim();
                         var old = newLine;
 
-                        newLine = string.Format("{0};{1};{2};{3};{4};{5}", birthdate.ToShortDateString(), age, name, address, plz, ort, anrede);
+                        newLine = string.Format("{0};{1};{2};{3};{4};{5};{6}", birthdate.ToShortDateString(), age, name, address, plz, ort, anrede);
                         if(old != newLine)
                         {
                             Console.WriteLine(newLine);
