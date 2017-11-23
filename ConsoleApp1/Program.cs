@@ -26,9 +26,18 @@ namespace ConsoleApp1
 
         private static void CreateBirthDayCSV()
         {
+            DateTime date;
+            DateTimePicker dtp = new DateTimePicker();
+
+            if(dtp.ShowDialog() == DialogResult.OK) {
+                date = dtp.Value;
+            } else {
+                return;
+            }
+
             var csv = new StringBuilder();
             csv.AppendLine(data["csvHeaderBirthdate"]);
-            var queryString = data["birthdayQuery"].Replace("$param$", DateTime.Now.Month.ToString());
+            var queryString = data["birthdayQuery"].Replace("$param$", date.Month.ToString());
 
             using (OleDbConnection connection = new OleDbConnection(data["connectionStringKesztele"]))
             using (OleDbCommand command = new OleDbCommand(queryString, connection))
@@ -63,7 +72,7 @@ namespace ConsoleApp1
                     Console.WriteLine(ex.Message);
                 }
             }
-            ShowCSVSaveDialog(csv, data["csvDefaultNameBirthdate"], data["csvInitialDirBirthdate"]);
+            ShowCSVSaveDialog(csv, data["csvDefaultNameBirthdate"], data["csvInitialDirBirthdate"], months[date.Month-1]);
         }
         private static void CreateBloodCSV()
         {
@@ -101,15 +110,14 @@ namespace ConsoleApp1
                 }
             }
 
-            ShowCSVSaveDialog(csv, data["csvDefaultNameBlood"], data["csvInitialDirBlood"]);
+            ShowCSVSaveDialog(csv, data["csvDefaultNameBlood"], data["csvInitialDirBlood"], months[DateTime.Now.Month - 1]);
         }
 
-        private static void ShowCSVSaveDialog(StringBuilder csv, string defaultName, string initialDir)
+        private static void ShowCSVSaveDialog(StringBuilder csv, string defaultName, string initialDir, string month)
         {
-
             using (var dialog = new SaveFileDialog())
             {
-                dialog.FileName = string.Format(defaultName, months[DateTime.Now.Month - 1]);
+                dialog.FileName = string.Format(defaultName, month);
                 dialog.InitialDirectory = initialDir;
                 dialog.OverwritePrompt = true;
 
